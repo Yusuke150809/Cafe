@@ -18,6 +18,12 @@ class SoundPlayer: NSObject, AVAudioPlayerDelegate {
     var rainydayPlayer: AVAudioPlayer?
 
     override init() {
+        do {
+            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
+            try AVAudioSession.sharedInstance().setActive(true)
+        } catch {
+            print("バックグラウンド再生設定失敗: \(error.localizedDescription)")
+        }
         self.sumpleData = NSDataAsset(name: "sample")?.data
         self.dripcoffeeData = NSDataAsset(name: "dripcoffee")?.data
         self.customersData = NSDataAsset(name: "customers")?.data
@@ -200,5 +206,6 @@ class SoundPlayer: NSObject, AVAudioPlayerDelegate {
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         player.play() // 再生を再開
     }
+    
 }
 
